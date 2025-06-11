@@ -25,4 +25,4 @@ Built with 💖 using HTML, CSS and JavaScript.
 
 1. **Clone or Download this Repository**
 ```bash
-https://github.com/cleanx777/Img-Fnt2Cpp```
+git clone https://github.com/cleanx777/Img-Fnt2Cpp
