@@ -27,4 +27,4 @@ Built with 💖 using HTML, CSS and JavaScript.
 
    ```bash
 git clone 
-https://github.com/yourname/XitersEngine2Cpp.git](https://github.com/cleanx777/Img-Fnt2Cpp```
+https://github.com/cleanx777/Img-Fnt2Cpp/edit/main/README.md
