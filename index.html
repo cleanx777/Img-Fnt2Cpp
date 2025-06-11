@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XitersEngine2Cpp</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            animation: fadeInOut 3s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .converters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            border: 2px solid #fecaca;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+        }
+
+        .converter-card:hover {
+            border-color: #dc2626;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.2);
+        }
+
+        .converter-card h3 {
+            color: #dc2626;
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-input-group {
+            margin-bottom: 20px;
+        }
+
+        .file-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #991b1b;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #fca5a5;
+            border-radius: 6px;
+            background: #fef2f2;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-input:hover {
+            border-color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .file-info {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .file-info h4 {
+            margin: 0 0 10px 0;
+            color: #991b1b;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .file-detail {
+            font-size: 0.85rem;
+            color: #7f1d1d;
+            margin-bottom: 4px;
+        }
+
+        .convert-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .convert-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #b91c1c, #991b1b);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .convert-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #991b1b;
+            border-top: 1px solid #fca5a5;
+            background: #fef2f2;
+        }
+
+        @media (max-width: 768px) {
+            .converters {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>XitersEngine</h1>
+            <p>Convert images and fonts to CPP byte arrays</p>
+        </div>
+
+        <div class="content">
+            <div class="converters">
+                <div class="converter-card">
+                    <h3>Image Converter</h3>
+                    
+                    <div class="file-input-group">
+                        <label for="imageInput">Select Image:</label>
+                        <input type="file" id="imageInput" class="file-input" accept="image/*">
+                    </div>
+
+                    <div id="imageInfo" class="file-info">
+                        <h4>File Details:</h4>
+                        <div id="imageDetails"></div>
+                    </div>
+
+                    <button class="convert-btn" id="imageBtn" onclick="convertImageToCpp()" disabled>
+                        Convert to C++
+                    </button>
+                </div>
+
+                <div class="converter-card">
+                    <h3>Font Converter</h3>
+                    
+                    <div class="file-input-group">
+                        <label for="fontInput">Select Font:</label>
+                        <input type="file" id="fontInput" class="file-input" accept=".ttf,.otf,.woff,.woff2">
+                    </div>
+
+                    <div id="fontInfo" class="file-info">
+                        <h4>File Details:</h4>
+                        <div id="fontDetails"></div>
+                    </div>
+
+                    <button class="convert-btn" id="fontBtn" onclick="convertFontToCpp()" disabled>
+                        Convert to C++
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>©
+ XitersEngine All Rights Reserved. 2025/2026</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function() {
+            handleFileSelect(this, 'image');
+        });
+
+        document.getElementById('fontInput').addEventListener('change', function() {
+            handleFileSelect(this, 'font');
+        });
+
+        function handleFileSelect(input, type) {
+            const file = input.files[0];
+            const infoDiv = document.getElementById(type + 'Info');
+            const detailsDiv = document.getElementById(type + 'Details');
+            const btn = document.getElementById(type + 'Btn');
+
+            if (file) {
+                detailsDiv.innerHTML = `
+                    <div class="file-detail"><strong>Name:</strong> ${file.name}</div>
+                    <div class="file-detail"><strong>Size:</strong> ${formatBytes(file.size)}</div>
+                    <div class="file-detail"><strong>Type:</strong> ${file.type || 'Unknown'}</div>
+                `;
+                infoDiv.style.display = 'block';
+                btn.disabled = false;
+            } else {
+                infoDiv.style.display = 'none';
+                btn.disabled = true;
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function convertImageToCpp() {
+            const file = document.getElementById("imageInput").files[0];
+            if (!file) return alert("Please select an image");
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const bytes = new Uint8Array(e.target.result);
+                let cpp = "unsigned char imageData[] = {\n  ";
+                for (let i = 0; i < bytes.length; i++) {
+                    cpp += `0x${bytes[i].toString(16).padStart(2, '0')}`;
+                    if (i < bytes.length - 1) cpp += ', ';
+                    if ((i + 1) % 12 === 0) cpp += '\n  ';
+                }
+                cpp += "\n};";
+                downloadFile(cpp, "image_data.cpp");
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function convertFontToCpp() {
+            const file = document.getElementById("fontInput").files[0];
+            if (!file) return alert("Please select a font.");
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const bytes = new Uint8Array(e.target.result);
+                let cpp = "unsigned char fontData[] = {\n  ";
+                for (let i = 0; i < bytes.length; i++) {
+                    cpp += `0x${bytes[i].toString(16).padStart(2, '0')}`;
+                    if (i < bytes.length - 1) cpp += ', ';
+                    if ((i + 1) % 12 === 0) cpp += '\n  ';
+                }
+                cpp += "\n};";
+                downloadFile(cpp, "font_data.cpp");
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+</body>
+</html>
