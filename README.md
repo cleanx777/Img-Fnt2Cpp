@@ -24,7 +24,5 @@ Built with 💖 using HTML, CSS and JavaScript.
 ## 🚀 How to Use
 
 1. **Clone or Download this Repository**
-
-   ```bash
-git clone 
-https://github.com/cleanx777/Img-Fnt2Cpp/edit/main/README.md
+```bash
+https://github.com/cleanx777/Img-Fnt2Cpp```
